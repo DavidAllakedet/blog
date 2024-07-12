@@ -8,15 +8,15 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Exécute les seeders de la base de données.
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Appelle les seeders spécifiés pour remplir la base de données
+        $this->call([
+            CategorySeeder::class, // Seeder pour les catégories
+            TagSeeder::class, // Seeder pour les tags
+            PostSeeder::class, // Seeder pour les posts
+        ]);
     }
 }
