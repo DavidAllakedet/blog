@@ -10,6 +10,11 @@ class Tag extends Model
 {
     use HasFactory;
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     // Définition de la relation entre les tags et les posts
     public function posts(): BelongsToMany
     {
