@@ -26,7 +26,10 @@ class PostController extends Controller
     public function postsByCategory(Category $category)
     {
         return view('posts.index', [
-            'posts' => $category->posts()->paginate(10),
+            // 'posts' => $category->posts()->latest()->paginate(10),
+            'posts' => Post::where(
+                'category_id', $category->id
+            )->latest()->paginate(10)
         ]);
 
     }
