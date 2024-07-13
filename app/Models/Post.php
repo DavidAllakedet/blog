@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
@@ -16,6 +17,32 @@ class Post extends Model
         'category',
         'tags'
     ];
+
+    public function scopeFilters(Builder $query, array $filters): void
+    {
+        if(isset($filters['search'])) {
+            $query->where(fn (Builder $requery) => $requery
+            ->where("title","like","%". $filters['search'] ."%")
+            ->orWhere("content","like","%". $filters['search'] ."%")
+        );
+    }
+
+    if(isset($filters['category'])) {
+        $query->where(
+            'category_id', $filters['category']->id  ?? $filters['category']
+        );
+
+    };
+
+
+    if(isset($filters['tag'])) {
+        $query->whereRelation(
+           'tags', 'tags.id', $filters['tag']->id  ?? $filters['tag']
+        );
+
+    };
+
+    }
 
     // Redéfinition de la clé de route pour les modèles Post, pour utiliser 'slug' au lieu de l'ID par défaut
     public function getRouteKeyName(): string

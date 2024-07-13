@@ -19,46 +19,25 @@ class PostController extends Controller
         //     'posts' => $posts
         // ]);
 
-        $posts = Post::query();
-
-        if ($search = $request->search) {
-             $posts->where(fn (Builder $requery) => $requery
-             ->where("title","like","%". $search ."%")
-             ->orWhere("content","like","%". $search ."%")
-        );
-        };
-
-        // Deuxième option (plus concise) pour récupérer les posts paginés, 10 par page, triés par ordre de création
-        return view('posts.index', [
-            'posts' => $posts->latest()->paginate(10),
-        ]);
+        return $this->postsView($request->search ? ['search' => $request->search] : []);
     }
 
     public function postsByCategory(Category $category)
     {
-        return view('posts.index', [
-
-            // 'posts' => $category->posts()->latest()->paginate(10),
-
-            'posts' => Post::where(
-                'category_id', $category->id
-            )->latest()->paginate(10)
-        ]);
-
+       return $this->postsView(['category' => $category]);
     }
 
     public function postsByTag(Tag $tag)
     {
+        return $this->postsView(['tag' => $tag]);
+
+    }
+
+    public function postsView(array $filters)
+    {
         return view('posts.index', [
-
-            // 'posts' => $tag->posts()->latest()->paginate(10),
-
-            'posts' => Post::whereRelation(
-                'tags' , 'tags.id' , $tag->id
-            )->latest()->paginate(10)
-
+            'posts' => Post::filters($filters)->latest()->paginate(10),
         ]);
-
     }
 
     // Méthode pour afficher un post spécifique
