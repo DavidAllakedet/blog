@@ -1,4 +1,4 @@
-<x-layout>
+<x-default-layout>
     <div class="space-y-10 md:space-y-16">
 
         {{-- Boucle à travers chaque article --}}
@@ -17,4 +17,4 @@
         {{ $posts->links() }}
 
     </div>
-</x-layout>
+</x-default-layout>

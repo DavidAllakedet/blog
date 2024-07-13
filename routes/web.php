@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 
 /* Route pour la page d'accueil */
 Route::get('/', [PostController::class, 'index'])->name('index');
