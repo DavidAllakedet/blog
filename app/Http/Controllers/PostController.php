@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
     // Méthode pour afficher la liste des posts
-    public function index()
+    public function index(Request $request)
     {
         // Première option pour récupérer tous les posts triés par ordre de création, du plus récent au plus ancien
         // $posts = Post::latest()->get();
@@ -18,9 +19,18 @@ class PostController extends Controller
         //     'posts' => $posts
         // ]);
 
+        $posts = Post::query();
+
+        if ($search = $request->search) {
+             $posts->where(fn (Builder $requery) => $requery
+             ->where("title","like","%". $search ."%")
+             ->orWhere("content","like","%". $search ."%")
+        );
+        };
+
         // Deuxième option (plus concise) pour récupérer les posts paginés, 10 par page, triés par ordre de création
         return view('posts.index', [
-            'posts' => Post::latest()->paginate(10),
+            'posts' => $posts->latest()->paginate(10),
         ]);
     }
 

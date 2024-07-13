@@ -2,12 +2,16 @@
     <div class="space-y-10 md:space-y-16">
 
         {{-- Boucle à travers chaque article --}}
-        @foreach ($posts as $post )
+        @forelse ($posts as $post )
 
             {{-- Inclusion du composant de poste avec l'attribut 'list' --}}
             <x-post :$post list />
 
-        @endforeach
+            @empty
+
+            <p class="text-slate-400 text-center">Aucun résultat</p>
+
+        @endforelse
 
         {{-- Affichage de la pagination pour les articles --}}
         {{ $posts->links() }}

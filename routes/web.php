@@ -22,3 +22,4 @@ Route::get('/tags/{tag}',[PostController::class,'postsByTag'])->name('posts.byTa
 
 /* Route pour afficher un article spécifique*/
 Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
+
